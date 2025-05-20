@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { userStats } from "@/data/userStats";
 import { Button } from "@/components/ui/button";
@@ -12,8 +13,12 @@ import { toast } from "sonner";
 import ProgressRing from "@/components/dashboard/ProgressRing";
 import { workouts } from "@/data/workouts";
 import StatCard from "@/components/dashboard/StatCard";
+import { getUserProfile, createUserProfile, updateUserProfile, getUserGoals, createUserGoals, updateUserGoals, getWorkoutHistory, isLoggedIn, getUserId } from "@/services/userService";
+import { UserProfile as UserProfileType, UserGoals } from "@/types/user";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const [isProfileLoaded, setIsProfileLoaded] = useState(false);
   const [profileForm, setProfileForm] = useState({
     name: "John Doe",
     email: "john.doe@example.com",
@@ -30,21 +35,120 @@ const Profile = () => {
     dietaryPreference: "No Restrictions",
   });
 
+  // Load user profile from backend
+  useEffect(() => {
+    const loadProfile = () => {
+      if (!isLoggedIn()) {
+        return;
+      }
+
+      const userProfile = getUserProfile();
+      if (userProfile) {
+        setProfileForm({
+          name: userProfile.name,
+          email: userProfile.email,
+          height: userProfile.height,
+          weight: userProfile.weight,
+          birthdate: userProfile.birthdate,
+          gender: userProfile.gender
+        });
+      }
+
+      const userGoals = getUserGoals();
+      if (userGoals) {
+        setGoalsForm({
+          targetWeight: userGoals.targetWeight,
+          workoutsPerWeek: userGoals.workoutsPerWeek,
+          fitnessGoal: userGoals.fitnessGoal,
+          dietaryPreference: userGoals.dietaryPreference
+        });
+      }
+
+      setIsProfileLoaded(true);
+    };
+
+    loadProfile();
+  }, []);
+
   const handleProfileUpdate = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Profile updated successfully!");
+    
+    try {
+      const userId = getUserId();
+      
+      if (!userId) {
+        // Create a new profile if user doesn't have one
+        createUserProfile({
+          name: profileForm.name,
+          email: profileForm.email,
+          height: profileForm.height,
+          weight: profileForm.weight,
+          birthdate: profileForm.birthdate,
+          gender: profileForm.gender
+        });
+      } else {
+        // Update existing profile
+        updateUserProfile({
+          name: profileForm.name,
+          email: profileForm.email,
+          height: profileForm.height,
+          weight: profileForm.weight,
+          birthdate: profileForm.birthdate,
+          gender: profileForm.gender
+        });
+      }
+      
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update profile");
+      console.error(error);
+    }
   };
 
   const handleGoalsUpdate = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Goals updated successfully!");
+    
+    try {
+      const userId = getUserId();
+      
+      if (!userId) {
+        toast.error("Please save your profile first");
+        return;
+      }
+      
+      if (!getUserGoals()) {
+        // Create new goals
+        createUserGoals(userId, {
+          targetWeight: goalsForm.targetWeight,
+          workoutsPerWeek: goalsForm.workoutsPerWeek,
+          fitnessGoal: goalsForm.fitnessGoal,
+          dietaryPreference: goalsForm.dietaryPreference
+        });
+      } else {
+        // Update existing goals
+        updateUserGoals({
+          targetWeight: goalsForm.targetWeight,
+          workoutsPerWeek: goalsForm.workoutsPerWeek,
+          fitnessGoal: goalsForm.fitnessGoal,
+          dietaryPreference: goalsForm.dietaryPreference
+        });
+      }
+      
+      toast.success("Goals updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update goals");
+      console.error(error);
+    }
   };
 
   // Calculate workout completion rate
   const completionRate = Math.round((userStats.workoutsCompleted / userStats.monthlyProgress.workoutsPlanned) * 100);
 
-  // Get user's recent workouts (just for display)
-  const recentWorkouts = workouts.slice(0, 3);
+  // Get workout history (we'll show sample data if no history exists)
+  const workoutHistory = getWorkoutHistory();
+  const recentWorkouts = workoutHistory.length > 0 
+    ? workoutHistory.slice(0, 3) 
+    : workouts.slice(0, 3);
 
   return (
     <Layout>
@@ -67,6 +171,13 @@ const Profile = () => {
                   <h2 className="text-xl font-bold">{profileForm.name}</h2>
                   <p className="text-muted-foreground mb-4">{profileForm.email}</p>
                   <Button className="w-full mb-2">Edit Profile Picture</Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={() => navigate("/my-exercises")}
+                  >
+                    My Exercises
+                  </Button>
                 </div>
 
                 <Separator className="my-6" />

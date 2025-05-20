@@ -1,5 +1,6 @@
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Button } from "@/components/ui/button";
@@ -14,42 +15,74 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { getUserProfile, createUserProfile, isLoggedIn } from "@/services/userService";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
+  // Check login status on component mount
+  useEffect(() => {
+    setIsUserLoggedIn(isLoggedIn());
+  }, []);
+
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (isLogin) {
-      // Simulate login
+      // Simulate login with localStorage
       if (email && password) {
-        setIsLoggedIn(true);
+        // Check if profile exists with this email
+        const userProfile = getUserProfile();
+        
+        if (!userProfile || userProfile.email !== email) {
+          toast.error("Invalid email or password");
+          return;
+        }
+        
+        // In a real app, we'd verify the password hash here
+        setIsUserLoggedIn(true);
         setShowAuthDialog(false);
         toast.success("Logged in successfully!");
         setEmail("");
         setPassword("");
+        
+        // Redirect to profile page
+        setTimeout(() => navigate("/profile"), 500);
       } else {
         toast.error("Please fill in all fields");
       }
     } else {
       // Simulate signup
       if (email && password && username) {
-        setIsLoggedIn(true);
+        // Create user profile
+        createUserProfile({
+          name: username,
+          email: email,
+          height: "170",
+          weight: "70",
+          birthdate: "1990-01-01",
+          gender: "Not specified",
+        });
+        
+        setIsUserLoggedIn(true);
         setShowAuthDialog(false);
         toast.success("Signed up and logged in successfully!");
         setEmail("");
         setPassword("");
         setUsername("");
+        
+        // Redirect to profile page
+        setTimeout(() => navigate("/profile"), 500);
       } else {
         toast.error("Please fill in all fields");
       }
@@ -57,14 +90,17 @@ const Layout = ({ children }: LayoutProps) => {
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    localStorage.removeItem('userProfile');
+    localStorage.removeItem('userGoals');
+    setIsUserLoggedIn(false);
     toast.info("You've been logged out");
+    navigate("/");
   };
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar 
-        isLoggedIn={isLoggedIn} 
+        isLoggedIn={isUserLoggedIn} 
         onLoginClick={() => {
           setIsLogin(true);
           setShowAuthDialog(true);
