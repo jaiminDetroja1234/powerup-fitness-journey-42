@@ -142,8 +142,16 @@ const WorkoutDetail = () => {
             <div className="bg-white/5 border border-white/10 rounded-lg p-6">
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="md:w-1/3 flex justify-center items-center">
-                  <div className="bg-white/10 rounded-lg h-48 w-full flex items-center justify-center">
-                    <p className="text-lg">[Exercise Visual]</p>
+                  <div className="bg-white/10 rounded-lg h-48 w-full flex items-center justify-center overflow-hidden">
+                    {workout.exercises[activeExerciseIndex].image ? (
+                      <img 
+                        src={workout.exercises[activeExerciseIndex].image} 
+                        alt={workout.exercises[activeExerciseIndex].name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <p className="text-lg">[Exercise Visual]</p>
+                    )}
                   </div>
                 </div>
                 
@@ -211,8 +219,17 @@ const WorkoutDetail = () => {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="pt-2 pb-4">
-                    <p>{exercise.instructions}</p>
+                  <div className="pt-2 pb-4 flex flex-col md:flex-row gap-4">
+                    {exercise.image && (
+                      <div className="w-full md:w-1/4 h-32 rounded-lg overflow-hidden">
+                        <img 
+                          src={exercise.image}
+                          alt={exercise.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <p className="md:w-3/4">{exercise.instructions}</p>
                   </div>
                 </AccordionContent>
               </AccordionItem>

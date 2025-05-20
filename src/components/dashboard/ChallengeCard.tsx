@@ -14,7 +14,7 @@ const ChallengeCard = ({ challenge }: ChallengeCardProps) => {
     <Card className="workout-card hover:scale-[1.02] transition-all duration-200 h-full flex flex-col">
       <div className="overflow-hidden rounded-t-xl h-40">
         <img
-          src={challenge.image}
+          src={challenge.image || "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"}
           alt={challenge.title}
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
         />
