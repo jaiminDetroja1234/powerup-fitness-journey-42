@@ -20,11 +20,11 @@ const Profile = () => {
   const navigate = useNavigate();
   const [isProfileLoaded, setIsProfileLoaded] = useState(false);
   const [profileForm, setProfileForm] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
+    name: "Jaimin Detroja",
+    email: "jaimin.detroja@example.com",
     height: "175",
     weight: "70",
-    birthdate: "1990-01-01",
+    birthdate: "1995-06-15",
     gender: "Male",
   });
 

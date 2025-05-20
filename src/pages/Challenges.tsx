@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { challenges, Challenge } from "@/data/challenges";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { CalendarDays, Users } from "lucide-react";
+import { CalendarDays, Users, Clock } from "lucide-react";
 
 const Challenges = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -73,6 +73,46 @@ const Challenges = () => {
 };
 
 const ChallengeCard = ({ challenge }: { challenge: Challenge }) => {
+  const [timeLeft, setTimeLeft] = useState("");
+  
+  useEffect(() => {
+    // Only set up the timer if days remaining is greater than 0
+    if (challenge.daysRemaining <= 0) {
+      setTimeLeft("Challenge ended");
+      return;
+    }
+    
+    const calculateTimeLeft = () => {
+      // Convert days to milliseconds (for demo purposes, assuming days start from now)
+      const daysInMs = challenge.daysRemaining * 24 * 60 * 60 * 1000;
+      const now = new Date().getTime();
+      const targetDate = now + daysInMs;
+      
+      const difference = targetDate - now;
+      
+      if (difference <= 0) {
+        setTimeLeft("Challenge ended");
+        return;
+      }
+      
+      // Calculate days, hours, minutes, seconds
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+      
+      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    };
+    
+    calculateTimeLeft(); // Initial calculation
+    
+    // Update the countdown every second
+    const timerId = setInterval(calculateTimeLeft, 1000);
+    
+    // Clean up on unmount
+    return () => clearInterval(timerId);
+  }, [challenge.daysRemaining]);
+  
   return (
     <Card className="h-full flex flex-col">
       <div className="aspect-video w-full overflow-hidden">
@@ -95,6 +135,15 @@ const ChallengeCard = ({ challenge }: { challenge: Challenge }) => {
             <Users className="h-4 w-4 text-muted-foreground" />
             <span>{challenge.participants.toLocaleString()} participants</span>
           </div>
+        </div>
+        
+        {/* Countdown Timer */}
+        <div className="flex flex-col items-center justify-center bg-primary/10 rounded-lg py-4 px-2 mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Clock className="h-5 w-5 text-primary" />
+            <span className="font-medium text-sm">Time Remaining:</span>
+          </div>
+          <div className="text-2xl font-bold text-center">{timeLeft}</div>
         </div>
         
         {challenge.progress !== undefined && (
