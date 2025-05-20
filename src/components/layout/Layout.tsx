@@ -75,7 +75,7 @@ const Layout = ({ children }: LayoutProps) => {
         }}
         onLogoutClick={handleLogout}
       />
-      <main className="flex-1">
+      <main className="flex-1 pt-16"> {/* Added pt-16 for padding top */}
         {children}
       </main>
       <Footer />
