@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -18,7 +19,7 @@ import {
 // Dummy data for meal plans
 const mealPlans = [
   {
-    id: 1,
+    id: "1",
     title: "High Protein Meal Plan",
     category: "Muscle Building",
     difficulty: "Intermediate",
@@ -27,15 +28,15 @@ const mealPlans = [
     calories: 2500,
     duration: 7,
     meals: [
-      { id: 1, name: "Breakfast", description: "Protein smoothie with oats", calories: 450 },
-      { id: 2, name: "Lunch", description: "Grilled chicken salad with quinoa", calories: 650 },
-      { id: 3, name: "Snack", description: "Greek yogurt with berries", calories: 250 },
-      { id: 4, name: "Dinner", description: "Salmon with steamed vegetables", calories: 750 },
-      { id: 5, name: "Night Snack", description: "Protein shake with almond milk", calories: 400 }
+      { id: "1", name: "Breakfast", description: "Protein smoothie with oats", calories: 450 },
+      { id: "2", name: "Lunch", description: "Grilled chicken salad with quinoa", calories: 650 },
+      { id: "3", name: "Snack", description: "Greek yogurt with berries", calories: 250 },
+      { id: "4", name: "Dinner", description: "Salmon with steamed vegetables", calories: 750 },
+      { id: "5", name: "Night Snack", description: "Protein shake with almond milk", calories: 400 }
     ]
   },
   {
-    id: 2,
+    id: "2",
     title: "Low Carb Diet",
     category: "Weight Loss",
     difficulty: "Beginner",
@@ -44,15 +45,15 @@ const mealPlans = [
     calories: 1800,
     duration: 14,
     meals: [
-      { id: 1, name: "Breakfast", description: "Avocado and eggs", calories: 350 },
-      { id: 2, name: "Lunch", description: "Tuna salad with olive oil", calories: 500 },
-      { id: 3, name: "Snack", description: "Almonds and cheese", calories: 200 },
-      { id: 4, name: "Dinner", description: "Grilled steak with vegetables", calories: 600 },
-      { id: 5, name: "Night Snack", description: "Cottage cheese with berries", calories: 150 }
+      { id: "1", name: "Breakfast", description: "Avocado and eggs", calories: 350 },
+      { id: "2", name: "Lunch", description: "Tuna salad with olive oil", calories: 500 },
+      { id: "3", name: "Snack", description: "Almonds and cheese", calories: 200 },
+      { id: "4", name: "Dinner", description: "Grilled steak with vegetables", calories: 600 },
+      { id: "5", name: "Night Snack", description: "Cottage cheese with berries", calories: 150 }
     ]
   },
   {
-    id: 3,
+    id: "3",
     title: "Plant-Based Plan",
     category: "Vegan",
     difficulty: "Intermediate",
@@ -61,15 +62,15 @@ const mealPlans = [
     calories: 2000,
     duration: 7,
     meals: [
-      { id: 1, name: "Breakfast", description: "Tofu scramble with vegetables", calories: 380 },
-      { id: 2, name: "Lunch", description: "Quinoa bowl with roasted vegetables", calories: 550 },
-      { id: 3, name: "Snack", description: "Hummus with carrot sticks", calories: 220 },
-      { id: 4, name: "Dinner", description: "Lentil curry with brown rice", calories: 650 },
-      { id: 5, name: "Night Snack", description: "Mixed nuts and dried fruits", calories: 200 }
+      { id: "1", name: "Breakfast", description: "Tofu scramble with vegetables", calories: 380 },
+      { id: "2", name: "Lunch", description: "Quinoa bowl with roasted vegetables", calories: 550 },
+      { id: "3", name: "Snack", description: "Hummus with carrot sticks", calories: 220 },
+      { id: "4", name: "Dinner", description: "Lentil curry with brown rice", calories: 650 },
+      { id: "5", name: "Night Snack", description: "Mixed nuts and dried fruits", calories: 200 }
     ]
   },
   {
-    id: 4,
+    id: "4",
     title: "Athletic Performance",
     category: "Sports Nutrition",
     difficulty: "Advanced",
@@ -78,11 +79,11 @@ const mealPlans = [
     calories: 3000,
     duration: 14,
     meals: [
-      { id: 1, name: "Breakfast", description: "Oatmeal with banana and protein powder", calories: 550 },
-      { id: 2, name: "Lunch", description: "Whole grain pasta with chicken", calories: 800 },
-      { id: 3, name: "Snack", description: "Protein bar and fruit", calories: 300 },
-      { id: 4, name: "Dinner", description: "Sweet potato with turkey and vegetables", calories: 750 },
-      { id: 5, name: "Night Snack", description: "Casein protein shake with peanut butter", calories: 400 }
+      { id: "1", name: "Breakfast", description: "Oatmeal with banana and protein powder", calories: 550 },
+      { id: "2", name: "Lunch", description: "Whole grain pasta with chicken", calories: 800 },
+      { id: "3", name: "Snack", description: "Protein bar and fruit", calories: 300 },
+      { id: "4", name: "Dinner", description: "Sweet potato with turkey and vegetables", calories: 750 },
+      { id: "5", name: "Night Snack", description: "Casein protein shake with peanut butter", calories: 400 }
     ]
   }
 ];
@@ -287,7 +288,9 @@ const Nutrition = () => {
                         </div>
                         <h3 className="text-lg font-semibold mb-2">{plan.title}</h3>
                         <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
-                        <Button className="w-full">View Plan</Button>
+                        <Link to={`/nutrition/meal-plans/${plan.id}`}>
+                          <Button className="w-full">View Plan</Button>
+                        </Link>
                       </CardContent>
                     </Card>
                   ))

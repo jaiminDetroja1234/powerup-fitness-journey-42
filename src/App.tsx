@@ -9,6 +9,7 @@ import Workouts from "./pages/Workouts";
 import WorkoutDetail from "./pages/WorkoutDetail";
 import Challenges from "./pages/Challenges";
 import Nutrition from "./pages/Nutrition";
+import MealPlanDetail from "./pages/MealPlanDetail";
 import Profile from "./pages/Profile";
 import MyExercises from "./pages/MyExercises";
 import NotFound from "./pages/NotFound";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/workouts/:id" element={<WorkoutDetail />} />
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/nutrition" element={<Nutrition />} />
+          <Route path="/nutrition/meal-plans/:id" element={<MealPlanDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/my-exercises" element={<MyExercises />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

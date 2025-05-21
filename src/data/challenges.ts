@@ -20,7 +20,7 @@ export const challenges: Challenge[] = [
     participants: 1245,
     daysRemaining: 18,
     prize: "Exclusive Badge & Leaderboard Recognition",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80",
     progress: 40
   },
   {
@@ -31,7 +31,7 @@ export const challenges: Challenge[] = [
     participants: 3578,
     daysRemaining: 7,
     prize: "Premium Workout Plan Access",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80",
     progress: 50
   },
   {
@@ -42,7 +42,7 @@ export const challenges: Challenge[] = [
     participants: 876,
     daysRemaining: 32,
     prize: "$100 Gift Card & 3 Months Premium",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80",
     progress: 43
   },
   {
@@ -53,7 +53,7 @@ export const challenges: Challenge[] = [
     participants: 2134,
     daysRemaining: 14,
     prize: "Wellness Package & Digital Badge",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80",
     progress: 33
   }
 ];
